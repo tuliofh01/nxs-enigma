@@ -2,22 +2,25 @@
 
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
-import sqlite3, pathlib, string, base64
 from cryptography.hazmat.primitives import hashes
 from cryptography.fernet import Fernet, MultiFernet
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
+import sqlite3, string, base64
+from src.misc.config import CONFIG, DB_FILE_PATH
+
 class DatabaseCtrl:
 
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
-        self.salt = None
+    def __init__(self):
+        self.username = None
+        self.password = None
         self.key = None
+        self.salt = None
         self.authentication_validity = False
-        self.database_path = pathlib.Path("../assets/data/database.db")
+        self.database_path = DB_FILE_PATH
 
-    def authenticate(self):
+    def authenticate(self, username, password):
+        self.username = username; self.password = password
         with sqlite3.connect(self.database_path) as database:
             SQLite3_handler = database.cursor()
             custom_query = f"SELECT * FROM USERS WHERE USERNAME IS \"{self.username}\""
@@ -29,15 +32,16 @@ class DatabaseCtrl:
                 pepper_possibilities = list(string.ascii_letters)
                 for character in pepper_possibilities:
                     comparative_output_source = (self.password + character).encode('ascii')
-                    PBKDF2HMAC_encoder_handler = PBKDF2HMAC(hashes.SHA256(), 32, self.salt, 10**5)
+                    iterations = CONFIG["security"]["pbkdf2_iterations"]
+                    PBKDF2HMAC_encoder_handler = PBKDF2HMAC(hashes.SHA256(), 32, self.salt, iterations)
                     self.key = PBKDF2HMAC_encoder_handler.derive(comparative_output_source)
                     AES_encoder_handler = AES.new(self.key, AES.MODE_ECB)
                     comparative_output = AES_encoder_handler.encrypt(pad(comparative_output_source, AES.block_size))
                     if comparative_output == encrypted_credentials:
                         self.authentication_validity = True
                         self.password = comparative_output
-                        return None
-            return Exception("Error: failed to authenticate.")
+                        return self.authentication_validity
+            return False
 
     def get_decrypted_target_record(self, target_id):
         if self.authentication_validity:

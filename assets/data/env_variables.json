@@ -1,0 +1,13 @@
+{
+  "security": {
+    "pbkdf2_iterations": 100000,
+    "default_account": {
+      "usr": "root",
+      "pwd": "toor"
+    }
+  },
+  "tui": {
+    "default_height": 24,
+    "default_width": 120
+  }
+}

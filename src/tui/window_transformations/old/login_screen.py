@@ -66,7 +66,7 @@ def initialize():
     window.clear()
     
     # Adds the ascii loading text to the window
-    asciiArtPath = pathlib.Path("../assets/asciiLoadingArt.txt")
+    asciiArtPath = pathlib.Path("../assets/loading_art.txt")
     with open(asciiArtPath, "r") as asciiArtFile:
         counter = -7
         for lineContent in asciiArtFile.readlines():

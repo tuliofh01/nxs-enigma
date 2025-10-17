@@ -1,13 +1,16 @@
 #! python3
 
-import frontEnd.parentWindow
-
-'''
-WHAT IS THE CURSES LIBRARY?
-Curses is a library that allows the creation good 
-looking and interactive terminal based apps.
-'''
+from src.tui.windows.stateful_window import StatefulWindow
 
 if __name__ == "__main__":
-    # Starts parent window module.
-    frontEnd.parentWindow.initialize()
+    window = StatefulWindow()
+
+    window.run_state("greetings")
+    login_state = window.run_state("login")
+
+    if login_state:
+
+    else:
+        window.run_state("error")
+
+

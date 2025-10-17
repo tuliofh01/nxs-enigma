@@ -1,4 +1,8 @@
 #! python3
 
+from src.misc.config import CONFIG
+
 # Resizes window to appropriate dimensions.
-print("\x1b[8;24;120t")
+height = CONFIG["tui"]["default_height"]
+width = CONFIG["tui"]["default_width"]
+print(f"\x1b[8;{height};{width}t")

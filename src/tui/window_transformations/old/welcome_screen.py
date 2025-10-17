@@ -1,5 +1,6 @@
 #! python3
-import curses, pathlib, os
+import curses, pathlib
+
 
 # Initializes the window
 def initialize():
@@ -7,10 +8,10 @@ def initialize():
     window = curses.newwin(curses.LINES, curses.COLS)
 
     # The following code fetches the application ascii art path
-    asciiArtPath = pathlib.Path("../assets/asciiErrorArt.txt")
+    asciiArtPath = pathlib.Path("../assets/title_art.txt")
 
-    # Displays error message
-    greetingMessage = "ERROR: FAILED TO LOGIN"
+    # Displays greeting message
+    greetingMessage = "WELCOME TO:"
     window.addstr(0, (curses.COLS // 2) - len(greetingMessage) // 2,
         greetingMessage, curses.A_BOLD)
     
