@@ -7,7 +7,7 @@
     }
   },
   "tui": {
-    "default_height": 24,
+    "default_height": 40,
     "default_width": 120
   }
 }

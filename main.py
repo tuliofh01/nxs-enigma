@@ -9,6 +9,7 @@ if __name__ == "__main__":
     login_state = window.run_state("login")
 
     if login_state:
+        pass
 
     else:
         window.run_state("error")

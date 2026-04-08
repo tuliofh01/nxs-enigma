@@ -1,21 +1,35 @@
 #! python3
 
+import enum
 from src.tui.windows.empty_window import EmptyWindow
+from src.tui.states.error_state import ErrorState
+from src.tui.states.login_state import LoginState
+from src.tui.states.greetings_state import GreetingsState
 
-from src.tui.window_transformations.error_state import ErrorState
-from src.tui.window_transformations.login_state import LoginState
-from src.tui.window_transformations.greetings_state import GreetingsState
+class WindowStates(enum.Enum):
+    greetings_state = GreetingsState
+    login_state = LoginState
+    error_state = ErrorState
 
 
 class StatefulWindow(EmptyWindow):
 
     def __init__(self):
         super().__init__()
-        self.states = ["greetings", "login", "error"]
+        self.available_states = WindowStates
         self.current_state = None
 
-    def run_state(self, target_state: str):
-        if target_state in self.states:
+    def run_state(self, target_state):
+
+        if not isinstance(target_state, WindowStates):
+            raise TypeError("target_state must be within WindowStates")
+        else:
+            self.current_state = target_state.value()
+
+
+
+
+        if target_state is WindowStates:
             for state in self.states:
                 if state == self.current_state:
                     match self.current_state:
